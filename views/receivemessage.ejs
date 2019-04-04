@@ -1,0 +1,185 @@
+<html>
+
+<head>
+  <title>Test Socketio - Homepage</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="http://127.0.0.1:3003/socket.io/socket.io.js"></script>
+  <style>
+    body {
+      padding: 3rem;
+      font-size: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 30rem;
+      font-family: "Lucida Console", Monaco, monospace;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+  </style>
+  <script>
+    $(document).ready(function () {
+      var socket;
+      $("#send2").click(function () {
+        var token = $('#Token').val()
+        // alert(tk)
+        var userIdSend = $('#userId').val()
+        var userIdReceive = $('#userIdReceive').val()
+        var tk = "{\"query\": {\"userId\": \"" + userId + "\"}}"
+        var opt = JSON.parse(tk)
+        var obju = {
+          query: `userId=${userIdReceive}`
+        }
+        // socket = io("http://127.0.0.1:3003",{ query: "userId=" + userId},{ transports: ['websocket'] });
+        socket = io("http://127.0.0.1:3003", obju,{ transports: ['websocket'] });
+        console.log(socket);
+        let obj = {
+          idUserSend: userIdSend,
+          idUserRevice: userIdReceive,
+          clientTime: 1111,
+          message: 'test message',
+          typeMsg: '1',
+          nameUserSend: 'username1',
+          nameUserRecive: 'username2'
+        }
+        socket.emit('send_message', obj)
+        socket.on('reply_message', package => {
+          var textedJson = JSON.stringify(package, undefined, 4);
+          console.log(textedJson);
+          // var text2 = '<h1>' + textedJson + '</h1>'
+          $('#myTextarea').append(textedJson);
+        })
+        // alert(JSON.stringify($("#hinhAnh").val()))
+        // console.log(JSON.stringify(packet));
+
+        // socket.emit('gui_du_lieu_chatting', 'shn_2018_0973703395', 'Nguyễn Yến', '', '', 'shn_2018_0973703395', 'Nguyễn Thị Ngân', 'chrome console 123', '1545993502', '0', '', '')
+        // socket.emit('gui_du_lieu_chatting_v2', packet, (fn) => {
+        //     // var content = fn.data.content
+        //     var textedJson = JSON.stringify(fn, undefined, 4);
+        //     console.log(textedJson);
+        //     $('#myTextarea').text(textedJson);
+        // })
+      });
+      $("#send3").click(function () {
+        var packet = {
+          deviceid: $("#deviceid").val(),
+          opponent: $("#opponent").val(),
+          receiverName: $("#receiverName").val(),
+          message: $("#message").val(),
+          clientTime: Math.floor(Date.now() / 1000),
+          trangThaiNguoiNhan: $("#trangThaiNguoiNhan").val(),
+          loaiMassage: $("#loaiMassage").val(),
+          hinhAnh: img,
+          extend: $("#extend").val()
+        }
+        img = []
+        document.getElementById("hinhAnh").value = "";
+        // alert(JSON.stringify($("#hinhAnh").val()))
+        // console.log(JSON.stringify(packet));
+
+        // socket.emit('gui_du_lieu_chatting', 'shn_2018_0973703395', 'Nguyễn Yến', '', '', 'shn_2018_0973703395', 'Nguyễn Thị Ngân', 'chrome console 123', '1545993502', '0', '', '')
+
+        // socket.emit('gui_du_lieu_chatting_v2', packet)
+        socket.emit('gui_du_lieu_chatting_v2', packet, (fn) => {
+          // var content = fn.data.content
+          var textedJson = JSON.stringify(fn, undefined, 4);
+          console.log(textedJson);
+          // var text2 = '<h1>' + textedJson + '</h1>'
+          $('#myTextarea').append(textedJson);
+        })
+
+      });
+      $("#clear").click(function () {
+        $('#myTextarea').text("");
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <br>
+      <div>
+        <p>
+          <h4>Gửi tin nhắn - không bắn notify</h4>
+        </p>
+      </div>
+      <br>
+      <div>
+        <p>
+          <label><b>Token</b></label>
+          <input class="form-control" name="Token" type="text" id="Token"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>UserId</b></label>
+          <input class="form-control" name="userId" type="text" id="userId"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>UserId</b></label>
+          <input class="form-control" name="userIdReceive" type="text" id="userIdReceive"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>DeviceID</b></label>
+          <input class="form-control" name="device" type="text" id="device"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>Mã người nhận</b></label>
+          <input class="form-control" name="opponent" value="shn_2018_0973703395" type="text" id="opponent">
+        </p>
+      </div>
+      <div>
+        <p>
+          <label><b>Tên người nhận</b></label>
+          <input class="form-control" name="receiverName" value="Nguyễn Thị Ngân" type="text" id="receiverName"></p>
+      </div>
+      <br>
+      <button id="send2" type="button" class="btn btn-success">Connect</button>
+      <br>
+      <br>
+      <div>
+        <p>
+          <label><b>Nội dung</b></label>
+          <input class="form-control" name="message" value="test gui hinh anh" type="text" id="message"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>Trạng thái người nhận</b></label>
+          <input class="form-control" name="trangThaiNguoiNhan" value="0" type="number" id="trangThaiNguoiNhan"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>Loại message</b></label>
+          <input class="form-control" name="loaiMassage" type="number" id="loaiMassage"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>File</b></label>
+          <input class="form-control" name="hinhAnh" type="file" id="hinhAnh" multiple="multiple"></p>
+      </div>
+      <div>
+        <p>
+          <label><b>Đuôi</b></label>
+          <input class="form-control" name="extend" type="text" id="extend"></p>
+      </div>
+      <br>
+      <button id="send3" type="button" class="btn btn-success">Send</button>
+    </div>
+    <div>
+      <h2 class="w3-text-blue">Kết quả</h2>
+    </div>
+    <textarea name="" id="myTextarea" cols="30" rows="15" readonly aria-setsize="20px"></textarea>
+    <br>
+    <button id="clear" type="button" class="btn btn-success">Clear</button>
+  </div>
+</body>
+
+</html>
