@@ -155,9 +155,42 @@ module.exports.setup = function (app) {
     *       422:
     *         description: sai loại tài khoản
     */
+  /**
+    * @swagger
+    * /api/updateTrangThaiDocTinNhan:
+    *   get:
+    *     description: cập nhật trạng thái khi đọc tin nhắn
+    *     tags: [User]
+    *     produces:
+    *       - application/json
+    *     parameters:
+    *       - name: idUser
+    *         description: id user đăng nhập
+    *         in: query
+    *         type: string
+    *         required: true
+    *       - name: idNguoiGui
+    *         description: id người gửi lấy trong api layDanhSachHoiThoai
+    *         in: query
+    *         type: string
+    *         required: true
+    *       - name: idNguoiNhan
+    *         description: id người nhận lấy trong api layDanhSachHoiThoai
+    *         in: query
+    *         type: string
+    *         required: true
+    *     responses:
+    *       200:
+    *         description: gửi dữ liệu thành công
+    *       401:
+    *         description: token không hợp lệ
+    *       422:
+    *         description: sai loại tài khoản
+    */
   app.post('/api/loginV1', userController.postLoginAsync)
   app.get('/api/getThongTin', userController.getThongTin)
   app.get('/api/layDuLieuHoiThoai', tinNhanAPI.layDuLieuHoiThoai)
   app.get('/api/layDanhSachUser', userController.layDanhSachUser)
   app.get('/api/layDanhSachHoiThoai', tinNhanAPI.layDanhSachHoiThoai)
+  app.get('/api/updateTrangThaiDocTinNhan', tinNhanAPI.updateTrangThaiDocTinNhan)
 }

@@ -58,5 +58,8 @@ module.exports = (io) => {
     socket.on(CONST.EVT.EVT_SEND_MESS, (package, fn) => {
       tinNhanController.sendMessage(package, io, socket, fn)
     })
+    socket.on(CONST.EVT.EVT_UPDATE_STATUS_MESS, (package) => {
+      tinNhanController.seenMessage(package, socket)
+    })
   })
 }
