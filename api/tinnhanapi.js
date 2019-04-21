@@ -34,7 +34,7 @@ let layDuLieuHoiThoaiFn = async (idNguoiGui, idNguoiNhan, skip, limit) => {
 }
 
 exports.layDanhSachHoiThoai =async (req, res) => {
-    let idNguoiGui = req.query.idNguoiGui
+    let idNguoiGui = req.query.userId
     let skip = req.query.skip
     let limit = req.query.limit
      skip = parseInt(skip, 10) || 0

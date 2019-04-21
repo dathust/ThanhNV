@@ -132,8 +132,8 @@ module.exports.setup = function (app) {
     *     produces:
     *       - application/json
     *     parameters:
-    *       - name: idNguoiGui
-    *         description: id nguoi gui
+    *       - name: userId
+    *         description: id cua user dang nhap
     *         in: query
     *         type: string
     *         required: true
