@@ -45,7 +45,30 @@ exports.layDanhSachHoiThoai =async (req, res) => {
      try {
         //  let result =await layDuLieuHoiThoaiFn(idNguoiGui, idNguoiNhan, skip, limit)
          let result =await tinNhanQR.layDanhSachHoiThoaiQR(idNguoiGui, skip, limit)
-         console.log('======>api lay danh sach hoi thoai:' , idNguoiGui);    
+         console.log('======>api lay danh sach hoi thoai:' , idNguoiGui);  
+         let arrTinNhanRemove = []  
+         _.forEach(result, item => {
+             _.forEach(result, item2 => {
+                 let idNguoiGui1 = _.get(item, 'IdNguoiGui')
+                 let idNguoiGui2 = _.get(item2, 'IdNguoiGui')
+                 let idNguoiNhan1 = _.get(item, 'IdNguoiNhan')
+                 let idNguoiNhan2 = _.get(item2, 'IdNguoiNhan')
+                 if (idNguoiGui1 === idNguoiNhan2 && idNguoiGui2 === idNguoiNhan1) {                     
+                    let thoiGian1 = _.get(item, 'ThoiGianServer')
+                    let thoiGian2 = _.get(item2, 'ThoiGianServer')
+                    if ( thoiGian1 > thoiGian2) {
+                        arrTinNhanRemove.push(_.get(item2, 'Id'))
+                    } else {
+                        arrTinNhanRemove.push(_.get(item, 'Id'))
+                    }
+                 }
+             })
+         })
+         _.map(arrTinNhanRemove, idRemove => {
+            _.remove(result, {
+              Id: idRemove
+            })
+          })
              return res.send({error: null, data: result})
      } catch (error) {
          console.log(error);
