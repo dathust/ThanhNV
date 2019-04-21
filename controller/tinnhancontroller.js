@@ -51,3 +51,20 @@ exports.sendMessage = async (package, io, socket, fn) => {
 exports.reciveMessage = async (package, socket, callback) => {
 
 }
+
+exports.seenMessage = async(package, socket) => {
+  let idUser = package.idUser
+  let idNguoiGui = package.idNguoiGui
+  if (!idUser || idUser === undefined || idUser.length === 0) {
+    socket.emit(CONST.EVT.EVT_PARAM_ERROR, CONST.MSG.MSG_PARAM_ERROR)
+  }
+  if (!idNguoiGui || idNguoiGui === undefined || idNguoiGui.length === 0) {
+    socket.emit(CONST.EVT.EVT_PARAM_ERROR, CONST.MSG.MSG_PARAM_ERROR)
+  }
+  console.log(`========>socket update status mess -- idUser: ${idUser} -- idNguoiGui: ${idNguoiGui}`);
+  
+  let result = await tinNhanModel.updateTinNhanDaDoc(idUser, idNguoiGui)
+  if (result) {
+    socket.to(idNguoiGui).emit(CONST.EVT.EVT_SEEN_MESS, true)
+  }
+}
