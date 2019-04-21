@@ -101,8 +101,8 @@ exports.getThongTinLopHoc = async (value) => {
 
 exports.luuTinNhan = async (msg) => {
   try {
-    let idNguoiGui = msg.idNguoiGui
-      , idNguoiNhan = msg.idNguoiNhan
+    let idNguoiGui = msg.IdNguoiGui
+      , idNguoiNhan = msg.IdNguoiNhan
       , clientTime = msg.ThoiGianClient
       , message = msg.NoiDung
       , typeMsg = msg.LoaiTinNhan

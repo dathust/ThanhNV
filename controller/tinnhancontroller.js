@@ -19,8 +19,8 @@ exports.sendMessage = async (package, io, socket) => {
   // luu tin nhan vao csdl
   const nMsg = {
     id: uuid.v4(),
-    idNguoiGui: idUserSend,
-    idNguoiNhan: idUserRevice,
+    IdNguoiGui: idUserSend,
+    IdNguoiNhan: idUserRevice,
     ThoiGianClient: clientTime,
     NoiDung: message,
     LoaiTinNhan: typeMsg,
