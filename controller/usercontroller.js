@@ -31,6 +31,7 @@ exports.getThongTin = async (req, res) => {
   if (getDB === null) {
     return res.status(406).send({ error: 'Sai ID hoac khong co du lieu', data: null })
   }
+  getDB[0].Id = _.get(getDB[0], 'Id')
   console.log('======>', getDB);
 
   return res.send({ error: null, data: getDB[0] })
