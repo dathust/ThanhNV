@@ -46,11 +46,17 @@ module.exports = (io) => {
     console.log('========>socket connect:', socket.id);
     userSocket.userJoinSocket(socket, userId)
     socket.on('disconnect', () => {
+      console.log('========>socket disconnect: userid: ', userId);
+      userSocket.userLeaveSocket(socket, userId)
+    })
 
+    socket.on(CONST.EVT.EVT_SOCKET_LEAVE, () => {
+      console.log('========>socket disconnect: userid: ', userId);
+      userSocket.userLeaveSocket(socket, userId)
     })
     // socket.on
-    socket.on(CONST.EVT.EVT_SEND_MESS, (package) => {
-      tinNhanController.sendMessage(package, io, socket)
+    socket.on(CONST.EVT.EVT_SEND_MESS, (package, fn) => {
+      tinNhanController.sendMessage(package, io, socket, fn)
     })
   })
 }
