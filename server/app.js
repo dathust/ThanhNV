@@ -1,7 +1,7 @@
 var express = require("express");
 var cookieParser = require("cookie-parser");
 var mongoose = require('mongoose');
-var app = express();
+const app = express();
 const fs = require('fs');
 const Guid = require('guid');
 const bodyParser = require("body-parser");
@@ -106,3 +106,4 @@ server.listen(app.get('port'), () => {
     )
     console.log('     Press CTRL-C to stop\n')
 })
+module.exports = app

@@ -34,7 +34,8 @@ exports.sendMessage = async (package, io, socket) => {
   let result = await tinNhanModel.luuTinNhan(nMsg)
   // console.log('=======>result: ', result);
   if (result) {
-    socket.to(idUserSend).to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
+    socket.to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
+    socket.emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
     socket.emit(CONST.EVT.EVT_MESS_SUCCESS, CONST.MSG.MSG_SEND_SUCCESS)
   } else {
     console.log(`========>Loi gui tin nhan: ${idUserSend} ==== ${idUserRevice} `);
