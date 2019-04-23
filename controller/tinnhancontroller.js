@@ -19,15 +19,15 @@ exports.sendMessage = async (package, io, socket) => {
   // luu tin nhan vao csdl
   const nMsg = {
     id: uuid.v4(),
-    idUserSend: idUserSend,
-    idUserRevice: idUserRevice,
-    clientTime: clientTime,
-    message: message,
-    typeMsg: typeMsg,
+    idNguoiGui: idUserSend,
+    idNguoiNhan: idUserRevice,
+    ThoiGianClient: clientTime,
+    NoiDung: message,
+    LoaiTinNhan: typeMsg,
     nameUserSend: nameUserSend,
     nameUserRecive: nameUserRecive,
-    timeServer: timeServer,
-    status: status
+    ThoiGianServer: timeServer,
+    TrangThai: status
   }
   // luu thanh cong thi tra ve
   // socket.to(idUserSend).to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)

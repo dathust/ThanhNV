@@ -101,13 +101,13 @@ exports.getThongTinLopHoc = async (value) => {
 
 exports.luuTinNhan = async (msg) => {
   try {
-    let idNguoiGui = msg.idUserSend
-      , idNguoiNhan = msg.idUserRevice
-      , clientTime = msg.clientTime
-      , message = msg.message
-      , typeMsg = msg.typeMsg
-      , timeServer = msg.timeServer
-      , trangThai = msg.status
+    let idNguoiGui = msg.idNguoiGui
+      , idNguoiNhan = msg.idNguoiNhan
+      , clientTime = msg.ThoiGianClient
+      , message = msg.NoiDung
+      , typeMsg = msg.LoaiTinNhan
+      , timeServer = msg.ThoiGianServer
+      , trangThai = msg.TrangThai
       , id = msg.id
     const sql = `insert into TinNhan (Id , IdNguoiGui, IdNguoiNhan, NoiDung, ThoiGianClient, ThoiGianServer,TrangThai,LoaiTinNhan)
                  values ('${id}', '${idNguoiGui}', '${idNguoiNhan}', '${message}', '${clientTime}', '${timeServer}', ${trangThai},${typeMsg})`
@@ -125,7 +125,7 @@ exports.layDuLieuHoiThoaiQR = async (idNguoiGui, idNguoiNhan, skip, limit) => {
   try {
     //select * from [dbSunriseKidV3].[dbo].[TinNhan] ORDER BY ThoiGianClient DESC OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY 
 
-    const sql = `Select * from TinNhan WHERE IdNguoiGui = '${idNguoiGui}' and IdNguoiNhan = '${idNguoiNhan}' ORDER BY ThoiGianClient DESC OFFSET ${skip} ROWS FETCH NEXT ${limit} ROWS ONLY`    
+    const sql = `Select * from TinNhan WHERE (IdNguoiGui = '${idNguoiGui}' and IdNguoiNhan = '${idNguoiNhan}') OR (IdNguoiGui = '${idNguoiNhan}' and IdNguoiNhan = '${idNguoiGui}') ORDER BY ThoiGianClient DESC OFFSET ${skip} ROWS FETCH NEXT ${limit} ROWS ONLY`    
     let result = await pool.request().query(sql)
     return result.recordset
   } catch (error) {
