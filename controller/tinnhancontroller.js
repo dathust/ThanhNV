@@ -19,8 +19,8 @@ exports.sendMessage = async (package, io, socket) => {
   // luu tin nhan vao csdl
   const nMsg = {
     id: uuid.v4(),
-    idNguoiGui: idUserSend,
-    idNguoiNhan: idUserRevice,
+    IdNguoiGui: idUserSend,
+    IdNguoiNhan: idUserRevice,
     ThoiGianClient: clientTime,
     NoiDung: message,
     LoaiTinNhan: typeMsg,
@@ -35,7 +35,7 @@ exports.sendMessage = async (package, io, socket) => {
   console.log('=======>nMsg: ', nMsg);
   if (result) {
     socket.to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
-    socket.emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
+    socket.emit(CONST.EVT.EVT_REPLY_MESS, f)
     socket.emit(CONST.EVT.EVT_MESS_SUCCESS, CONST.MSG.MSG_SEND_SUCCESS)
   } else {
     console.log(`========>Loi gui tin nhan: ${idUserSend} ==== ${idUserRevice} `);
