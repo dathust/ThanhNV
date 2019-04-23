@@ -56,11 +56,14 @@ exports.userLogin = async (taiKhoan, matKhau) => {
 
 exports.layThongTinCaNhan = async (userId) => {
   try {
-    const sql = `select hs.Id,  hs.HoDem, hs.Ten, hs.BiDanh, hs.NgaySinh, hs.GioiTinh, hs.TinhCach, hs.NangKhieu, ph.TenPhuHuynh1, ph.QuanHePH1, ph.SdtPH1, ph.TenPhuHuynh2, ph.QuanHePH2, ph.SdtPH2
-      from PhuHuynh as ph JOIN HocSinh as hs ON ph.Id=hs.IdPhuHuynh  WHERE ph.Id = '${userId}' `
-    let result = await pool.request().query(sql)    
+    const sql = `select hs.Id,  hs.HoDem, hs.Ten, hs.BiDanh, hs.NgaySinh, ph.DiaChi,hs.GioiTinh, hs.TinhCach, hs.NangKhieu, hs.Anh, ph.TenPhuHuynh1, ph.QuanHePH1, ph.SdtPH1, ph.TenPhuHuynh2, ph.QuanHePH2, ph.SdtPH2
+      from PhuHuynh as ph JOIN HocSinh as hs ON ph.Id=hs.IdPhuHuynh  WHERE ph.Id = '${userId}'`
+    console.log('=======>sql: ', sql);
+    
+      let result = await pool.request().query(sql)   
+    result = result.recordset     
     if (result.length > 0) {
-      result = result.recordset
+      // result = result.recordset
       _.map(result, item => {
         item.userType = 1
       })
@@ -111,8 +114,6 @@ exports.luuTinNhan = async (msg) => {
     console.log('======>sql: ', sql);
 
     let result = await pool.request().query(sql)
-    console.log('=======>test result: ', result);
-
     return result
   } catch (error) {
     console.log(error);
@@ -122,7 +123,9 @@ exports.luuTinNhan = async (msg) => {
 
 exports.layDuLieuHoiThoaiQR = async (idNguoiGui, idNguoiNhan, skip, limit) => {
   try {
-    const sql = `Select * from TinNhan WHERE IdNguoiGui = '${idNguoiGui}' and IdNguoiNhan = '${idNguoiNhan}' `
+    //select * from [dbSunriseKidV3].[dbo].[TinNhan] ORDER BY ThoiGianClient DESC OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY 
+
+    const sql = `Select * from TinNhan WHERE IdNguoiGui = '${idNguoiGui}' and IdNguoiNhan = '${idNguoiNhan}' ORDER BY ThoiGianClient DESC OFFSET ${skip} ROWS FETCH NEXT ${limit} ROWS ONLY`    
     let result = await pool.request().query(sql)
     return result.recordset
   } catch (error) {
