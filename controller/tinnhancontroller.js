@@ -32,7 +32,7 @@ exports.sendMessage = async (package, io, socket) => {
   // luu thanh cong thi tra ve
   // socket.to(idUserSend).to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
   let result = await tinNhanModel.luuTinNhan(nMsg)
-  // console.log('=======>result: ', result);
+  console.log('=======>nMsg: ', nMsg);
   if (result) {
     socket.to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
     socket.emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
