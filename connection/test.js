@@ -58,9 +58,11 @@ exports.layThongTinCaNhan = async (userId) => {
   try {
     const sql = `select hs.Id,  hs.HoDem, hs.Ten, hs.BiDanh, hs.NgaySinh, hs.GioiTinh, hs.TinhCach, hs.NangKhieu, ph.TenPhuHuynh1, ph.QuanHePH1, ph.SdtPH1, ph.TenPhuHuynh2, ph.QuanHePH2, ph.SdtPH2
       from PhuHuynh as ph JOIN HocSinh as hs ON ph.Id=hs.IdPhuHuynh  WHERE ph.Id = '${userId}' `
-    let result = await pool.request().query(sql)    
-    if (result.length > 0) {
-      result = result.recordset
+    console.log('=======>sql: ', sql);
+	  let result = await pool.request().query(sql)    
+   result = result.recordset 
+	if (result.length > 0) {
+     // result = result.recordset
       _.map(result, item => {
         item.userType = 1
       })
