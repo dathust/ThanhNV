@@ -110,7 +110,7 @@ exports.luuTinNhan = async (msg) => {
       , trangThai = msg.TrangThai
       , id = msg.id
     const sql = `insert into TinNhan (Id , IdNguoiGui, IdNguoiNhan, NoiDung, ThoiGianClient, ThoiGianServer,TrangThai,LoaiTinNhan)
-                 values ('${id}', '${idNguoiGui}', '${idNguoiNhan}', '${message}', '${clientTime}', '${timeServer}', ${trangThai},${typeMsg})`
+                 values ('${id}', '${idNguoiGui}', '${idNguoiNhan}', N'${message}', '${clientTime}', '${timeServer}', ${trangThai},${typeMsg})`
     console.log('======>sql: ', sql);
 
     let result = await pool.request().query(sql)
