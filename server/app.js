@@ -100,10 +100,12 @@ v1.setup(app)
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0')
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3003)
 server.listen(app.get('port'), () => {
-    console.log('\n     Server is running at http://localhost:%d in %s mode',
+    console.log('\n     \x1b[31m%s\x1b[0m','Server is running at http://localhost:%d in %s mode',
         app.get('port'),
         app.get('env')
     )
-    console.log('     Press CTRL-C to stop\n')
+    console.log('     \x1b[31m%s\x1b[0m','Press CTRL-C to stop\n')
+    // console.log('\n     %c Server stated ', 'color: white; background -color: #2274A5', 'Start server');
+    // console.log('\x1b[32m%s\x1b[0m', 'I am cyan');
 })
 module.exports = app
