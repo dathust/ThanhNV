@@ -174,43 +174,9 @@ exports.layDanhSachHoiThoaiQR = async (idNguoiGui, skip, limit) => {
 
 
     const sql = `Select  TinNhan.Id, TinNhan.IdNguoiGui, TinNhan.IdNguoiNhan, TinNhan.ThoiGianClient, TinNhan.NoiDung, TinNhan.LoaiTinNhan, TinNhan.ThoiGianServer, TinNhan.TrangThai
-    from TinNhan join (select IdNguoiNhan, max(ThoiGianServer) as ThoiGianServer from  TinNhan where TinNhan.IdNguoiGui = TinNhan.IdNguoiGui and IdNguoiGui = '${idNguoiGui}' group by IdNguoiNhan) C on TinNhan.IdNguoiNhan = C.IdNguoiNhan and TinNhan.ThoiGianServer = C.ThoiGianServer where TinNhan.IdNguoiGui = '${idNguoiGui}' ORDER By TinNhan.ThoiGianServer DESC OFFSET ${skip} ROWS FETCH NEXT ${limit} ROWS ONLY`
+    from TinNhan join (select IdNguoiNhan, max(ThoiGianServer) as ThoiGianServer from  TinNhan where TinNhan.IdNguoiGui = TinNhan.IdNguoiGui and IdNguoiGui = '${idNguoiGui}' OR IdNguoiNhan = '${idNguoiGui}' group by IdNguoiNhan) C on TinNhan.IdNguoiNhan = C.IdNguoiNhan and TinNhan.ThoiGianServer = C.ThoiGianServer where TinNhan.IdNguoiGui = '${idNguoiGui}' OR TinNhan.IdNguoiNhan = '${idNguoiGui}' ORDER By TinNhan.ThoiGianServer DESC OFFSET ${skip} ROWS FETCH NEXT ${limit} ROWS ONLY`
     let result = await pool.request().query(sql)
     return result.recordset
-  } catch (error) {
-    console.log(error);
-    return null
-  }
-}
-
-exports.layDanhSachPhuHuynh = async (userId) => {
-  try {
-    const sql = `select lh.Id, lh.TenLopHoc, hs.HoDem, hs.Ten, hs.BiDanh, hs.IdPhuHuynh, ph.TenPhuHuynh1, ph.TenPhuHuynh2
-                  from LopHoc as lh JOIN NhanVien as nv ON lh.IdChuNhiem = nv.Id
-                      JOIN HocSinh as hs ON hs.IdLopHoc = lh.Id
-                      JOIN PhuHuynh as ph ON hs.IdPhuHuynh = ph.Id
-                  WHERE lh.IdChuNhiem = '${userId}'`
-    let result = await pool.request().query(sql)
-    // console.log('============>result: ', result);
-
-    result = result.recordset
-    return result
-  } catch (error) {
-    console.log(error);
-    return null
-  }
-}
-
-exports.layDanhSachGiaoVienTheoIdPhuHuynh = async (userId) => {
-  try {
-    const sql = `select * from HocSinh as hs JOIN LopHoc as lh ON hs.IdLopHoc = lh.Id
-                  JOIN NhanVien as nv ON nv.Id = lh.IdChuNhiem
-                  WHERE hs.IdPhuHuynh = '${userId}'`
-    let result = await pool.request().query(sql)
-    // console.log('============>result: ', result);
-
-    result = result.recordset
-    return result
   } catch (error) {
     console.log(error);
     return null
