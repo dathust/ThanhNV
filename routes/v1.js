@@ -123,8 +123,41 @@ module.exports.setup = function (app) {
     *       422:
     *         description: sai loại tài khoản
     */
+  /**
+    * @swagger
+    * /api/layDanhSachHoiThoai:
+    *   get:
+    *     description: lay danh sach hoi thoai
+    *     tags: [User]
+    *     produces:
+    *       - application/json
+    *     parameters:
+    *       - name: idNguoiGui
+    *         description: id nguoi gui
+    *         in: query
+    *         type: string
+    *         required: true
+    *       - name: skip
+    *         description: số bản ghi bỏ qua
+    *         in: query
+    *         type: string
+    *         required: true
+    *       - name: limit
+    *         description: số bản ghi cần lấy
+    *         in: query
+    *         type: string
+    *         required: true
+    *     responses:
+    *       200:
+    *         description: gửi dữ liệu thành công
+    *       401:
+    *         description: token không hợp lệ
+    *       422:
+    *         description: sai loại tài khoản
+    */
   app.post('/api/loginV1', userController.postLoginAsync)
   app.get('/api/getThongTin', userController.getThongTin)
   app.get('/api/layDuLieuHoiThoai', tinNhanAPI.layDuLieuHoiThoai)
   app.get('/api/layDanhSachUser', userController.layDanhSachUser)
+  app.get('/api/layDanhSachHoiThoai', tinNhanAPI.layDanhSachHoiThoai)
 }
