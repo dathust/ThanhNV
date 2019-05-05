@@ -35,12 +35,12 @@ exports.connectioSSQl = async () => {
 exports.userLogin = async (taiKhoan, matKhau) => {
   try {
     if (taiKhoan === 'phuhuynh01' && matKhau === 'phuhuynh01') {
-      let idUser = 'c13f904b-ea24-4783-9a49-ba8f26b6f516'
+      let idUser = 'c13f904b-ea24-4783-9a49-ba8f26b6f516'.toUpperCase()
       return idUser
       // let sql = `select * from PhuHuynh as ph JOIN HocSinh as hs ON ph.Id=hs.IdPhuHuynh  WHERE ph.Id = ${} `
     } else {
       if (taiKhoan === 'giaovien01' && matKhau === 'giaovien01') {
-        let idUser = '2e6e1839-e73c-4943-a7a8-cf70136950f2'
+        let idUser = '2e6e1839-e73c-4943-a7a8-cf70136950f2'.toUpperCase()
         return idUser
         // let sql = `select * from PhuHuynh as ph JOIN HocSinh as hs ON ph.Id=hs.IdPhuHuynh  WHERE ph.Id = ${} `
       } else {
@@ -158,8 +158,6 @@ exports.layDanhSachGiaoVienTheoIdPhuHuynh = async (userId) => {
                   JOIN NhanVien as nv ON nv.Id = lh.IdChuNhiem
                   WHERE hs.IdPhuHuynh = '${userId}'`
     let result = await pool.request().query(sql)
-    // console.log('============>result: ', result);
-
     result = result.recordset
     return result
   } catch (error) {

@@ -14,9 +14,11 @@ exports.layDuLieuHoiThoai =async (req, res) => {
         return res.status(406).send({error: 'Thieu idNguoiNhan', data: null})
      }
      try {
+         console.log(`==========>api layDuLieuHoiThoai idNguoiGui: ${idNguoiGui} ----- idNguoiNhan: ${idNguoiNhan}` );
+         
         //  let result =await layDuLieuHoiThoaiFn(idNguoiGui, idNguoiNhan, skip, limit)
          let result =await tinNhanQR.layDuLieuHoiThoaiQR(idNguoiGui, idNguoiNhan, skip, limit)
-         console.log('=========>result query: ' , result);    
+        //  console.log('=========>result query: ' , result);    
              return res.send({error: null, data: result})
      } catch (error) {
          console.log(error);

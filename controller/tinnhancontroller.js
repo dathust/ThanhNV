@@ -36,7 +36,7 @@ exports.sendMessage = async (package, io, socket) => {
   if (result) {
     socket.to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
     socket.emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
-    socket.emit(CONST.EVT.EVT_MESS_SUCCESS, CONST.MSG.MSG_SEND_SUCCESS)    
+    // socket.emit(CONST.EVT.EVT_MESS_SUCCESS, CONST.MSG.MSG_SEND_SUCCESS)    
   } else {
     console.log(`========>Loi gui tin nhan: ${idUserSend} ==== ${idUserRevice} `);
     socket.emit(CONST.EVT.EVT_MESS_FAIL, CONST.MSG.MSG_SEND_FAIL)
