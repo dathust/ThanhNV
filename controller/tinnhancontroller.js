@@ -2,7 +2,7 @@ const _ = require('lodash')
 const uuid = require('uuid')
 const CONST = require('../constant/Const')
 const tinNhanModel = require('../connection/test')
-exports.sendMessage = async (package, io, socket) => {
+exports.sendMessage = async (package, io, socket, fn) => {
   // check dieu kien o day
   let idUserSend = package.idUserSend
   let idUserRevice = package.idUserRevice
@@ -35,7 +35,10 @@ exports.sendMessage = async (package, io, socket) => {
   console.log('=======>nMsg: ', nMsg);
   if (result) {
     socket.to(idUserRevice).emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
-    socket.emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
+    if (_.isFunction(fn)) {
+      fn(nMsg)
+    }
+    // socket.emit(CONST.EVT.EVT_REPLY_MESS, nMsg)
     // socket.emit(CONST.EVT.EVT_MESS_SUCCESS, CONST.MSG.MSG_SEND_SUCCESS)    
   } else {
     console.log(`========>Loi gui tin nhan: ${idUserSend} ==== ${idUserRevice} `);

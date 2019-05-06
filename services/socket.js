@@ -55,8 +55,8 @@ module.exports = (io) => {
       userSocket.userLeaveSocket(socket, userId)
     })
     // socket.on
-    socket.on(CONST.EVT.EVT_SEND_MESS, (package) => {
-      tinNhanController.sendMessage(package, io, socket)
+    socket.on(CONST.EVT.EVT_SEND_MESS, (package, fn) => {
+      tinNhanController.sendMessage(package, io, socket, fn)
     })
   })
 }
