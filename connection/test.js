@@ -8,7 +8,7 @@ exports.connectioSSQl = async () => {
     const dbConfig = {
       user: 'sa',
       password: 'Password789',
-      server: 'ec2-54-236-239-203.compute-1.amazonaws.com',
+      server: 'ec2-54-80-225-204.compute-1.amazonaws.com',
       database: 'dbSunriseKidV3',
       port: 1433,
       options: {
@@ -178,5 +178,18 @@ exports.layDanhSachHoiThoaiQR = async (idNguoiGui, skip, limit) => {
   } catch (error) {
     console.log(error);
     return null
+  }
+}
+
+exports.updateTinNhanDaDoc = async (idUser, idNguoiGui) => {
+  // update tat ca cac tin nhan co status = 0, nguoiGui = idNguoiGui, nguoiNhan = idUesr
+  try {    
+    // Update TinNhan set TinNhan.TrangThai = 1 where TinNhan.IdNguoiGui = 'ph01' and TinNhan.IdNguoiNhan = 'gv01' and TinNhan.TrangThai = 0
+    const sql = `Update TinNhan Set TinNhan.TrangThai = 1 Where TinNhan.IdNguoiGui = '${idNguoiGui}' and TinNhan.IdNguoiNhan = '${idUser}' and TinNhan.TrangThai = 0`
+    let result = await pool.request().query(sql)
+    console.log('=======>sql updateTinNhanDaDoc: ', result);
+    return result.recordset
+  } catch (error) {
+    
   }
 }

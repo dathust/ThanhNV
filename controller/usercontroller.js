@@ -12,39 +12,53 @@ exports.postLoginAsync = async (req, res) => {
   if (!matKhau || matKhau === null || matKhau === '') {
     return res.status(406).send({ error: 'Thieu nat khau', data: null })
   }
-  let userLogin = await MSSQL.userLogin(taiKhoan, matKhau)
-  if (!userLogin || userLogin === null) {
-    return res.status(404).send({ error: 'Sai tai khoan hoac mat khau', data: null })
-  } else {
-    if (userLogin === 'error') {
-      return res.status(500).send({ error: 'Loi server', data: null })
+  try {
+    let userLogin = await MSSQL.userLogin(taiKhoan, matKhau)
+    if (!userLogin || userLogin === null) {
+      return res.status(404).send({ error: 'Sai tai khoan hoac mat khau', data: null })
     } else {
-      console.log('========>User login: ', userLogin);
-
-      return res.send({ error: null, data: userLogin })
+      if (userLogin === 'error') {
+        return res.status(500).send({ error: 'Loi server', data: null })
+      } else {
+        console.log('========>User login: ', userLogin);
+        return res.send({ error: null, data: userLogin })
+      }
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).sned({ error: error, data: null })
   }
+
 }
 exports.getThongTin = async (req, res) => {
   let key = req.query.userID
-  let getDB = await MSSQL.layThongTinCaNhan(key)
-  if (getDB === null) {
-    return res.status(406).send({ error: 'Sai ID hoac khong co du lieu', data: null })
+  if (!key || key === undefined || key.length === 0) {
+    return res.status(406).send({ error: 'Thieu tham so', data: null })
   }
-  getDB[0].Id = _.get(getDB[0], 'Id')
-  console.log('======>', getDB);
+  try {
+    let getDB = await MSSQL.layThongTinCaNhan(key)
+    if (getDB === null) {
+      return res.status(406).send({ error: 'Sai ID hoac khong co du lieu', data: null })
+    }
+    getDB[0].Id = _.get(getDB[0], 'Id')
+    console.log('======>', getDB);
 
-  return res.send({ error: null, data: getDB[0] })
+    return res.send({ error: null, data: getDB[0] })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({error: error, data: null})
+  }
+
 }
 
 exports.layDanhSachUser = async (req, res) => {
-  let userID  = req.query.userID
+  let userID = req.query.userID
   let userType = req.query.typeUser
   if (!userID || userID === undefined || userID === '') {
-    return res.status(402).send({error: 'Thieu user id', data: null})
+    return res.status(402).send({ error: 'Thieu user id', data: null })
   }
   if (!userType || userType === undefined || userType === '') {
-    return res.status(402).send({error: 'Thieu user type', data: null})
+    return res.status(402).send({ error: 'Thieu user type', data: null })
   }
   userType = parseInt(userType, 10)
 
@@ -53,7 +67,7 @@ exports.layDanhSachUser = async (req, res) => {
   }
   try {
     console.log(`=======>layDanhSachUser: ${userID} ----- ${userType}`);
-    
+
     //check gv
     if (userType === 2) {
       // tim cac lop ma gv nay chu nhiem
@@ -74,26 +88,26 @@ exports.layDanhSachUser = async (req, res) => {
         return res.status(406).send({ error: 'Sai ID hoac khong co du lieu', data: null })
       }
       // console.log('======>output: ', output);
-      
+
       // let result =  _.groupBy(output, 'TenLopHoc')
       let result = xuLyDanhSachGiaoVienTheoIdPhuHuynh(output)
       return res.send({ error: null, data: result })
     }
-    return res.send({error: null, data: []})
+    return res.send({ error: null, data: [] })
   } catch (error) {
     console.log(error);
-    return res.status(500).send({error: error, data: null})
+    return res.status(500).send({ error: error, data: null })
   }
 }
 
-let xuLyDanhSachPhuHuynhTheoLopHoc =  (danhSachPhuHuynh) => {
+let xuLyDanhSachPhuHuynhTheoLopHoc = (danhSachPhuHuynh) => {
   // let result = _.groupBy(danhSachPhuHuynh, 'Id')
   let result = []
   for (let i = 0; i < (danhSachPhuHuynh.length - 1); i++) {
     let item = danhSachPhuHuynh[i];
     let idLop1 = _.get(item, 'Id')
     let phuHuynh = {
-      id_phu_huynh : _.get(item, 'IdPhuHuynh'),
+      id_phu_huynh: _.get(item, 'IdPhuHuynh'),
       ten_phu_huynh_1: _.get(item, 'TenPhuHuynh1'),
       ten_phu_huynh_2: _.get(item, 'TenPhuHuynh2'),
       ten_hoc_sinh: _.get(item, 'HoDem') + ' ' + _.get(item, 'Ten'),
@@ -110,7 +124,7 @@ let xuLyDanhSachPhuHuynhTheoLopHoc =  (danhSachPhuHuynh) => {
       let idLop2 = _.get(item, 'Id')
       if (idLop2 === idLop1) {
         let phuHuynh2 = {
-          id_phu_huynh : _.get(item2, 'IdPhuHuynh'),
+          id_phu_huynh: _.get(item2, 'IdPhuHuynh'),
           ten_phu_huynh_1: _.get(item2, 'TenPhuHuynh1'),
           ten_phu_huynh_2: _.get(item2, 'TenPhuHuynh2'),
           ten_hoc_sinh: _.get(item2, 'HoDem') + ' ' + _.get(item2, 'Ten'),
@@ -132,11 +146,11 @@ let xuLyDanhSachPhuHuynhTheoLopHoc =  (danhSachPhuHuynh) => {
 
 let xuLyDanhSachGiaoVienTheoIdPhuHuynh = (danhSachGiaoVien) => {
   let result = _.map(danhSachGiaoVien, item => {
-      return {
-        id_giao_vien: _.get(item, 'IdChuNhiem'),
-        ten_giao_vien: _.get(item, 'HoTen'),
-        ten_lop: _.get(item, 'TenLopHoc')
-      }
+    return {
+      id_giao_vien: _.get(item, 'IdChuNhiem'),
+      ten_giao_vien: _.get(item, 'HoTen'),
+      ten_lop: _.get(item, 'TenLopHoc')
+    }
   })
   return result
 }
